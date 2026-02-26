@@ -248,7 +248,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-For support, email support@cropsense.ai or join our Discord channel.
+For support, email rudranarayansharma896@gmail.com or join our Discord channel.
 
 ---
 
