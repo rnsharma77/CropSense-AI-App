@@ -1,0 +1,243 @@
+/* ── Analyses Page ── */
+.analyses {
+  min-height: 100vh;
+  padding-top: 100px;
+  padding-bottom: 60px;
+  background: linear-gradient(135deg, rgba(2,7,4,0.95) 0%, rgba(4,14,8,0.98) 100%);
+}
+
+.analyses .wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ── Page Header ── */
+.page-title {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-0);
+  letter-spacing: -2px;
+  margin-bottom: 32px;
+  text-shadow: 0 0 20px rgba(0, 255, 135, 0.2);
+  line-height: 1.1;
+}
+
+/* ── Loading State ── */
+.analyses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.analyses-list > p {
+  text-align: center;
+  color: var(--text-2);
+  font-size: 16px;
+  padding: 40px 20px;
+}
+
+/* ── Analysis Card ── */
+.analysis-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.analysis-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 135, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.analysis-card:hover {
+  border-color: var(--plasma);
+  box-shadow: 0 0 24px rgba(0, 255, 135, 0.15), inset 0 0 20px rgba(0, 255, 135, 0.05);
+  transform: translateY(-4px);
+}
+
+.analysis-card:hover::before {
+  left: 100%;
+}
+
+/* ── Card Meta (Timestamp) ── */
+.analysis-meta {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.analysis-meta::before {
+  content: '📅';
+  font-size: 14px;
+}
+
+/* ── Card Header (Timestamp + Delete Button) ── */
+.analysis-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.analysis-card__delete {
+  background: transparent;
+  border: 1px solid rgba(255, 61, 61, 0.3);
+  color: #ff3d3d;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.analysis-card__delete:hover {
+  background: rgba(255, 61, 61, 0.1);
+  border-color: #ff3d3d;
+  box-shadow: 0 0 12px rgba(255, 61, 61, 0.2);
+  transform: scale(1.05);
+}
+
+.analysis-card__delete:active {
+  transform: scale(0.95);
+}
+
+/* ── Card Summary (Disease Name) ── */
+.analysis-summary {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-0);
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  text-shadow: 0 0 12px rgba(0, 255, 135, 0.1);
+}
+
+/* ── Card Details Grid ── */
+.analysis-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  font-size: 14px;
+}
+
+.analysis-details > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: rgba(0, 255, 135, 0.02);
+  border-radius: 8px;
+  border-left: 3px solid var(--plasma);
+}
+
+.analysis-details > div strong {
+  font-weight: 700;
+  color: var(--plasma);
+  font-size: 15px;
+}
+
+.analysis-details > div {
+  color: var(--text-1);
+  font-weight: 500;
+}
+
+/* ── Empty State ── */
+.analyses-list > p {
+  grid-column: 1 / -1;
+  color: var(--text-2);
+  font-style: italic;
+}
+
+/* ── Responsive Design ── */
+@media (max-width: 768px) {
+  .analyses {
+    padding-top: 80px;
+    padding-bottom: 40px;
+  }
+
+  .page-title {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+
+  .analysis-card {
+    padding: 18px;
+  }
+
+  .analysis-summary {
+    font-size: 18px;
+  }
+
+  .analysis-details {
+    grid-template-columns: 1fr;
+  }
+
+  .analysis-card__delete {
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .analyses .wrap {
+    padding: 0 12px;
+  }
+
+  .page-title {
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+
+  .analysis-card {
+    padding: 14px;
+    border-radius: var(--radius-md);
+  }
+
+  .analysis-summary {
+    font-size: 16px;
+  }
+
+  .analysis-details {
+    gap: 12px;
+  }
+
+  .analysis-details > div {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .analysis-card__header {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .analysis-meta {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .analysis-card__delete {
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+}
