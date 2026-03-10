@@ -95,7 +95,7 @@ export const analyzeDisease = async (imageBase64) => {
 
     // Parse response using correct structure from Plant.id v3 API
     const isHealthy = data.result?.is_healthy?.binary || false;
-    const diseases = data.result?.disease?.suggestions || [];
+    const diseases  = data.result?.disease?.suggestions || [];
     
     console.log('Parsed data:');
     console.log('  - isHealthy:', isHealthy);
@@ -109,24 +109,17 @@ export const analyzeDisease = async (imageBase64) => {
         summary: 'Plant is healthy',
         disease: null,
         confidence: data.result?.is_healthy?.probability || 0.95,
-        plantInfo: {
-          name: 'Healthy Plant',
-          commonName: 'Plant',
-          isHealthy: true,
-        },
+        plantInfo: { name: 'Healthy Plant', commonName: 'Plant', isHealthy: true },
         isDemo: false,
         meta: { source: 'client' },
       });
 
       return {
-        success: true,
-        isHealthy: true,
-        disease: null,
+        success:    true,
+        isHealthy:  true,   // ← TOP LEVEL — ResultPage destructures this directly
+        disease:    null,
         confidence: data.result?.is_healthy?.probability || 0.95,
-        plantInfo: {
-          name: 'Healthy Plant',
-          commonName: 'Plant',
-        },
+        plantInfo:  { name: 'Healthy Plant', commonName: 'Plant' },
       };
     }
 
@@ -137,24 +130,17 @@ export const analyzeDisease = async (imageBase64) => {
         summary: 'No disease detected',
         disease: null,
         confidence: 0,
-        plantInfo: {
-          name: 'Unknown Plant',
-          commonName: 'Plant',
-          isHealthy: true,
-        },
+        plantInfo: { name: 'Unknown Plant', commonName: 'Plant', isHealthy: true },
         isDemo: false,
         meta: { source: 'client' },
       });
 
       return {
-        success: true,
-        isHealthy: true,
-        disease: null,
+        success:    true,
+        isHealthy:  true,   // ← treat as healthy so ResultPage shows healthy screen
+        disease:    null,
         confidence: 0,
-        plantInfo: {
-          name: 'Unknown Plant',
-          commonName: 'Plant',
-        },
+        plantInfo:  { name: 'Unknown Plant', commonName: 'Plant' },
       };
     }
 
@@ -162,45 +148,46 @@ export const analyzeDisease = async (imageBase64) => {
     console.log('✓ Disease detected:', diseases[0].name, `(${(diseases[0].probability * 100).toFixed(1)}%)`);
     const topDisease = diseases[0];
     const formattedDisease = {
-      name: topDisease.name,
-      probability: topDisease.probability,
-      description: topDisease.details?.description || `${topDisease.name} detected on plant.`,
-      treatment: topDisease.details?.treatment?.chemical || ['Consult local agronomist for treatment plan'],
-      organic: topDisease.details?.treatment?.biological || ['Apply neem oil as organic treatment'],
-      severity: topDisease.probability > 0.7 ? 'High' : topDisease.probability > 0.4 ? 'Medium' : 'Low',
+      name:          topDisease.name,
+      probability:   topDisease.probability,
+      description:   topDisease.details?.description || `${topDisease.name} detected on plant.`,
+      treatment:     topDisease.details?.treatment?.chemical   || ['Consult local agronomist for treatment plan'],
+      organic:       topDisease.details?.treatment?.biological || ['Apply neem oil as organic treatment'],
+      severity:      topDisease.probability > 0.7 ? 'High' : topDisease.probability > 0.4 ? 'Medium' : 'Low',
       severityScore: Math.round(topDisease.probability * 100),
-      color: topDisease.probability > 0.7 ? '#ff5757' : topDisease.probability > 0.4 ? '#f5e642' : '#3dffa0',
+      // FIX: these two fields are used by ResultPage — map from v3 API fields
+      affectedCrops: topDisease.details?.host  || [],
+      seasonalRisk:  topDisease.details?.cause || '',
+      color:         topDisease.probability > 0.7 ? '#ff5757' : topDisease.probability > 0.4 ? '#f5e642' : '#3dffa0',
     };
+
     const resultObj = {
-      success: true,
-      isHealthy: false,
-      isDemo: false,
-      disease: formattedDisease,
+      success:     true,
+      isHealthy:   false,  // ← TOP LEVEL — ResultPage destructures this directly
+      isDemo:      false,
+      disease:     formattedDisease,
       allDetected: diseases.slice(0, 3).map(d => ({
-        name: d.name,
-        probability: d.probability,
+        name:          d.name,
+        probability:   d.probability,
         severityScore: Math.round(d.probability * 100),
-        color: d.probability > 0.7 ? '#ff5757' : d.probability > 0.4 ? '#f5e642' : '#3dffa0',
+        color:         d.probability > 0.7 ? '#ff5757' : d.probability > 0.4 ? '#f5e642' : '#3dffa0',
       })),
-      confidence: topDisease.probability,
-      plantInfo: {
-        name: 'Detected Plant',
-        commonName: 'Plant',
-        isHealthy: false,
-      },
+      confidence:  topDisease.probability,
+      plantInfo:   { name: 'Detected Plant', commonName: 'Plant', isHealthy: false },
     };
 
     // Save disease analysis to backend
     await saveAnalysisSummary({
-      summary: `${formattedDisease.name} (${formattedDisease.severityScore}%)`,
-      disease: formattedDisease.name,
+      summary:    `${formattedDisease.name} (${formattedDisease.severityScore}%)`,
+      disease:    formattedDisease.name,
       confidence: formattedDisease.probability,
-      plantInfo: resultObj.plantInfo,
-      isDemo: false,
-      meta: { source: 'client' },
+      plantInfo:  resultObj.plantInfo,
+      isDemo:     false,
+      meta:       { source: 'client' },
     });
 
     return resultObj;
+
   } catch (error) {
     console.error('Plant.id API Error:', error.message);
     throw new Error(error.message || 'Failed to analyze image. Please check your API key and try again.');

@@ -1,0 +1,82 @@
+/* ══════════════════════════════════════════════════════════
+   LANGUAGE SWITCHER — Floating Globe Button
+══════════════════════════════════════════════════════════ */
+.lang-sw {
+  position: relative;
+}
+
+.lang-sw__btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  background: var(--bg-2);
+  border: 1px solid var(--b2);
+  border-radius: var(--r-pill);
+  color: var(--t0);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.lang-sw__btn:hover { border-color: var(--b3); color: var(--plasma); }
+.lang-sw__flag { font-size: 15px; }
+.lang-sw__native { color: var(--t1); }
+
+.lang-sw__caret {
+  width: 14px; height: 14px;
+  color: var(--t2);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.lang-sw--open .lang-sw__caret { transform: rotate(180deg); }
+
+/* Dropdown */
+.lang-sw__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 220px;
+  background: var(--bg-2);
+  border: 1px solid var(--b2);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: fadeUp 0.18s ease both;
+  z-index: 300;
+}
+.lang-sw__list {
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 6px;
+}
+.lang-sw__list::-webkit-scrollbar { width: 3px; }
+.lang-sw__list::-webkit-scrollbar-thumb { background: var(--t3); }
+
+.lang-sw__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all 0.18s;
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-family: var(--font-body);
+  color: var(--t1);
+}
+.lang-sw__item:hover { background: var(--plasma-04); color: var(--t0); }
+.lang-sw__item--on   { background: rgba(0,255,135,0.09); color: var(--plasma); }
+
+.lang-sw__item-flag   { font-size: 17px; }
+.lang-sw__item-labels { display: flex; flex-direction: column; }
+.lang-sw__item-label  { font-size: 13px; font-weight: 600; color: inherit; }
+.lang-sw__item-native { font-size: 11px; color: var(--t2); margin-top: 1px; }
+.lang-sw__item--on .lang-sw__item-native { color: var(--plasma); opacity: 0.7; }
+
+.lang-sw__check { margin-left: auto; color: var(--plasma); }

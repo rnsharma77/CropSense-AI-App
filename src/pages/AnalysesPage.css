@@ -36,6 +36,8 @@
   color: var(--text-2);
   font-size: 16px;
   padding: 40px 20px;
+  grid-column: 1 / -1;
+  font-style: italic;
 }
 
 /* ── Analysis Card ── */
@@ -163,11 +165,7 @@
 }
 
 /* ── Empty State ── */
-.analyses-list > p {
-  grid-column: 1 / -1;
-  color: var(--text-2);
-  font-style: italic;
-}
+/* merged with earlier selector for DRY */
 
 /* ── Responsive Design ── */
 @media (max-width: 768px) {
